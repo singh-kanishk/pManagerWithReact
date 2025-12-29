@@ -1,2 +1,7 @@
 @import 'tailwindcss';
 @import "@flaticon/flaticon-uicons/css/all/all";
+
+
+body {
+  font-family: 'Outfit', sans-serif;
+}
