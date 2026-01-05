@@ -1,5 +1,6 @@
 import FormLabel from "../atoms/FormLabel"
 interface objectForLabel{
+    label:string
     name:string;
     type:"text"|"password"|"email"|"select"|"text-area";
     value?:Array<string>;
@@ -16,7 +17,7 @@ function FieldSet({fieldSetName,objectOfLabel}:FieldSetProp){
     <fieldset className="border-2 p-3">
         <legend className="text-blue-400 font-bold">{fieldSetName}:</legend>
         {objectOfLabel.map((obj)=>(
-            <FormLabel key={obj.name} name={obj.name} type={obj.type} value={obj.value} rows={obj.rows} cols={obj.cols} ></FormLabel>            
+            <FormLabel key={obj.name} name={obj.name} type={obj.type} label={obj.label} value={obj.value} rows={obj.rows} cols={obj.cols} ></FormLabel>            
         ))}
     </fieldset>
     )
