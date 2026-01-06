@@ -1,4 +1,4 @@
-
+import { useForm , FormProvider} from "react-hook-form";
 import FieldSet from "../molecules/FieldsetInForm"
 import ButtonSection from "../molecules/ButtonSectionInForm"
 interface buttonProp{
@@ -6,22 +6,41 @@ interface buttonProp{
     buttonClassName?:string;
     width:string;
     height:string;
+    onClick:()=>void;
 }
 interface FormProp{
+    type:"Add"|"View";
     buttonsInForm:Array<buttonProp>
 };
-function Form({buttonsInForm}:FormProp){
-     
-    return (
-       
-
+interface FormData{
+    itemName:string;
+    folder:string;
+    url:string;
+    userName:string;
+    password:string;
+    note:string;
+}
+function Form({ type ,buttonsInForm}:FormProp){
+    const methods= useForm<FormData>();
+    const onSubmit = (data: FormData) => {
+        console.log("Form Data Captured:", data);
+    };
+     if (type==="Add")
+    return (  
+<FormProvider {...methods}>     
 <div className="fixed inset-0 flex items-center justify-center bg-gray-100">
-    <form className="flex flex-col gap-4 border-2 w-1/3 p-4 overflow-y-auto min-w-100">
-        <FieldSet fieldSetName="Item Details" objectOfLabel={[{name:"Item Name",label:"itemName" ,type:"text"},{name:"folder", label:"Folder",type:"select",value:["No Folder"]}]}></FieldSet>
-        <FieldSet fieldSetName="Login Credentials" objectOfLabel={[{name:"url",label:"URL",type:"text"},{label:"UserName",name:"userName",type:"text"},{name:"password",label:"Password",type:"password"}]}></FieldSet>
-        <FieldSet fieldSetName="Note" objectOfLabel={[{name:"note",label:"",type:"text-area",rows:5,cols:35}]}></FieldSet>
+    <form 
+    onSubmit={methods.handleSubmit(onSubmit)}
+    className="flex flex-col gap-4 border-2 w-1/3 p-4 overflow-y-auto min-w-100">
+        <FieldSet fieldSetName="Item Details" objectOfLabel={[{label:"Item Name",name:"itemName" ,type:"text",validator:{required:true}},{name:"folder", label:"Folder",type:"select",value:["No Folder"],validator:{required:true}}]}></FieldSet>
+        <FieldSet fieldSetName="Login Credentials" objectOfLabel={[{name:"url",validator:{},label:"URL",type:"text"},{label:"User Name",name:"userName",type:"text",validator:{required:true}},{name:"password",label:"Password",type:"password",validator:{required:true}}]}></FieldSet>
+        <FieldSet fieldSetName="Note" objectOfLabel={[{name:"note",label:"",type:"text-area",validator:{},rows:5,cols:35}]}></FieldSet>
         <ButtonSection buttonInSection={buttonsInForm}></ButtonSection>
     </form>
-    </div>)
+   
+    </div>
+     </FormProvider>
+     )
+     return null;
 }
 export default Form

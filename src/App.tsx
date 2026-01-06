@@ -1,12 +1,10 @@
-import Layout from "./components/layout"
-// import Form from "./components/organism/Form"
-
+import Layout from "./components/Layout"
 function App() {
   
 
   return (
     <>
-    {/* <Form buttonsInForm={[{name:"Save",width:"50px",height:"30px"}]}></Form> */}
+
     <Layout></Layout>
     </>
   )

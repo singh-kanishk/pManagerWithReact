@@ -1,4 +1,15 @@
 import {useId} from 'react'
+import { useFormContext, type RegisterOptions} from 'react-hook-form';
+interface Validator{
+    
+    required?:boolean|string;
+    min?:number;
+    max?:number;
+    minLength?:number;
+    maxLength?:number;
+    // Changed to handle both raw string or RHF pattern object
+    pattern?: string | { value: RegExp; message: string };
+}
 interface FormLabelProp{
     name:string;
     label:string;
@@ -6,17 +17,20 @@ interface FormLabelProp{
     value?:Array<string>
     rows?:number    
     cols?:number
+    validator?: Validator
 }
 
 
 
-function FormLabel({name,label,type,value,rows,cols}:FormLabelProp){
+function FormLabel({name,label,type,value=[],rows,cols,validator={}}:FormLabelProp){
+    const {register}=useFormContext();
     const id=useId();
+    const validationRules = validator as RegisterOptions;
     if(type=="text"||type=="password"||type=="email")
     return(
         <div className='flex flex-col gap-1 pl-3 pr-3'>
-            <label htmlFor={id} className='font-bold text-lg'>{label}: </label>
-            <input type={type} id={id} name={name} placeholder={`Enter ${name}...`} 
+            <label  htmlFor={id} className='font-bold text-lg'>{label}: </label>
+            <input {...register(name,validationRules)} type={type} id={id} placeholder={`Enter ${name}...`} 
             className='border-2 pl-3 pr-3 p-1' />
         </div>)
     
@@ -24,7 +38,7 @@ function FormLabel({name,label,type,value,rows,cols}:FormLabelProp){
         return (
             <div className='flex flex-col gap-1 pl-3 pr-3'>
                 <label htmlFor={id} className='font-bold text-lg'>{label}: </label>
-                <select id={id} name={name} className='cursor-pointer '>
+                <select {...register(name,validationRules)} id={id} className='cursor-pointer '>
                     {
                     value.map((item,index)=>(
                         <option key={index} value={item}>{item}</option>
@@ -39,7 +53,7 @@ function FormLabel({name,label,type,value,rows,cols}:FormLabelProp){
         return(
             <div className='flex flex-col gap-1 pl-3 pr-3'>
                 <label htmlFor={id} className='font-bold text-lg'>{label} </label>
-            <textarea id={id} name={name} rows={rows||3} cols={cols||20} className='border-2 pl-3 pr-3 p-1' placeholder={`Enter Data ...`}/>
+            <textarea {...register(name,validationRules)} id={id}  rows={rows||3} cols={cols||20} className='border-2 pl-3 pr-3 p-1' placeholder={`Enter Data ...`}/>
             </div>
         )
     }
