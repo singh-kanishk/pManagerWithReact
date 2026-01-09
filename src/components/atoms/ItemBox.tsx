@@ -12,11 +12,12 @@ function ItemBox(prop:itemBoxProp){
             <p>{prop.itemName}</p>
         </li>
         <li className="flex items-center">
+
             <p className="text-xs">{prop.date.toLocaleDateString()} at {prop.date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
         </li>
-        <li>
+        {/* <li>
 
-        </li>
+        </li> */}
         </ul>
     )
 }

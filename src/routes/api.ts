@@ -6,12 +6,27 @@ const apiRouter=express.Router()
 
 
 const insertInDB=db.prepare(`INSERT INTO data (itemName,folderId,url,userName,password,note) VALUES (?, ?, ?, ?, ?, ?)`)
-
+const getItems=db.prepare(`SELECT itemName , createdAt FROM data`)
 
 
 apiRouter.get('/',(_req:Request,res:Response)=>{
-    res.send("Helo")
+    
+    try{
+        const data=getItems.all()
+        res.status(200).json({
+            message:"Success",
+            data:data
+        })
+
+    }
+    catch{
+        res.status(404).json({
+            message:"Error while fetching data from server"
+        })
+    }
 })
+
+
 apiRouter.post('/save',(req:Request,res:Response)=>{
     try{
     const data= req.body;

@@ -1,8 +1,48 @@
+import { useState,useEffect } from "react";
 import Folder from "./organism/Folder";
 import Header from "./organism/Header";
 import ItemArea from "./organism/ItemArea";
-import Form from "./organism/Form";
+
 function Layout(){
+
+const[items,setItems]=useState([]);
+
+
+// async function fetchItems(){  
+//     try{
+//         const response= await fetch("http://localhost:2995/api")
+//         if(!response.ok){
+//             throw new Error ("Error while fetching data")
+//         }
+//         const data =await response.json
+        
+//         setItems(data);
+//  }
+//  catch {
+//     return [];
+//  } 
+//  }
+     
+useEffect(()=>{
+    async function fetchItems(){  
+    try{
+        const response= await fetch("http://localhost:2995/api")
+        if(!response.ok){
+            console.error("Error while fetching data from client")
+        }
+        const result =await response.json()
+        
+       setItems(result.data||[]);
+ }
+ catch {
+    setItems([])
+ } 
+ }
+ fetchItems()
+},[])
+    
+    
+
     return(
         <>
         <div className="grid min-h-screen grid-cols-[250px_1fr] grid-rows-[auto_1fr]">
@@ -13,10 +53,9 @@ function Layout(){
                 <Folder></Folder>
             </div>
             <div>
-                <ItemArea boxNames={[]}></ItemArea>
+                <ItemArea boxNames={items}></ItemArea>
             </div>
         </div>
-        <Form buttonsInForm={[{name:"Save",width:"50px",height:"30px",onClick:()=>console.log("hello")}]}></Form>
         </>
     )
 }
