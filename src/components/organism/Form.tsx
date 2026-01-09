@@ -22,10 +22,15 @@ interface FormData{
     password:string;
     note:string;
 }
-async function onSave(data:FormData){
+
+function Form({ type ,buttonsInForm}:FormProp){
+    
+    const methods= useForm<FormData>();
+
+    async function onSave(data:FormData){
     
 try {
-    const response=await fetch ("http://localhost:295/api/save",        
+    const response=await fetch ("http://localhost:2995/api/save",        
         {
         method:"POST",
         headers:{
@@ -47,9 +52,6 @@ catch(error){
 }
 
 }
-function Form({ type ,buttonsInForm}:FormProp){
-    
-    const methods= useForm<FormData>();
     
     if (type==="Add")
     return (  

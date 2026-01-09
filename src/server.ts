@@ -4,7 +4,7 @@ import cors from 'cors'
 import apiRouter from './routes/api';
 
 const app:Application = express();
-const PORT = 295;
+const PORT = 2995;
 app.use(cors())
 app.use(express.json())
 app.use('/api',apiRouter)
