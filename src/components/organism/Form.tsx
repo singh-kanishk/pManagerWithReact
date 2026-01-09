@@ -24,11 +24,14 @@ interface FormData{
 
 function Form({ type ,buttonsInForm}:FormProp){
     
-    const methods= useForm<FormData>();
+const methods= useForm<FormData>();
+const isReadOnly = type === "View";
 
-    async function onSave(data:FormData){
+async function onSave(data:FormData){
     
 try {
+
+    
     const response=await fetch ("http://localhost:2995/api/save",        
         {
         method:"POST",
@@ -50,18 +53,16 @@ catch(error){
       alert('Submission failed.');
 }
 
-}
-    
-    if (type==="Add")
-    return (  
+}    
+return (  
 <FormProvider {...methods}>     
 <div className="fixed inset-0 flex items-center justify-center bg-gray-100">
     <form 
     onSubmit={methods.handleSubmit(onSave)}
     className="flex flex-col gap-4 border-2 w-1/3 p-4 overflow-y-auto min-w-100">
-        <FieldSet fieldSetName="Item Details" objectOfLabel={[{label:"Item Name",name:"itemName" ,type:"text",validator:{required:true}},{name:"folder", label:"Folder",type:"select",value:["No Folder"],validator:{required:true}}]}></FieldSet>
-        <FieldSet fieldSetName="Login Credentials" objectOfLabel={[{name:"url",validator:{},label:"URL",type:"text"},{label:"User Name",name:"userName",type:"text",validator:{required:true}},{name:"password",label:"Password",type:"password",validator:{required:true}}]}></FieldSet>
-        <FieldSet fieldSetName="Note" objectOfLabel={[{name:"note",label:"",type:"text-area",validator:{},rows:5,cols:35}]}></FieldSet>
+        <FieldSet isReadOnly={isReadOnly} fieldSetName="Item Details" objectOfLabel={[{label:"Item Name",name:"itemName" ,type:"text",validator:{required:true}},{name:"folder", label:"Folder",type:"select",value:["No Folder"],validator:{required:true}}]}></FieldSet>
+        <FieldSet isReadOnly={isReadOnly} fieldSetName="Login Credentials" objectOfLabel={[{name:"url",validator:{},label:"URL",type:"text"},{label:"User Name",name:"userName",type:"text",validator:{required:true}},{name:"password",label:"Password",type:"password",validator:{required:true}}]}></FieldSet>
+        <FieldSet isReadOnly={isReadOnly} fieldSetName="Note" objectOfLabel={[{name:"note",label:"",type:"text-area",validator:{},rows:5,cols:35}]}></FieldSet>
         <ButtonSection  buttonInSection={buttonsInForm}></ButtonSection>
     </form>
    

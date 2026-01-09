@@ -17,20 +17,22 @@ interface objectForLabel{
     rows?:number;
     cols?:number;
     validator:Validator
+    
 }
 
 interface FieldSetProp{
+    isReadOnly:boolean
     fieldSetName:string;
     objectOfLabel:Array<objectForLabel>
 }
-function FieldSet({fieldSetName,objectOfLabel}:FieldSetProp){
+function FieldSet({fieldSetName,isReadOnly,objectOfLabel}:FieldSetProp){
 
     
     return(
     <fieldset className="border-2 p-3">
         <legend className="text-blue-400 font-bold">{fieldSetName}:</legend>
         {objectOfLabel.map((obj)=>(
-            <FormLabel key={obj.name} name={obj.name} type={obj.type} label={obj.label} value={obj.value} rows={obj.rows} cols={obj.cols} validator={obj.validator}></FormLabel>            
+            <FormLabel isReadOnly={isReadOnly} key={obj.name} name={obj.name} type={obj.type} label={obj.label} value={obj.value} rows={obj.rows} cols={obj.cols} validator={obj.validator}></FormLabel>            
         ))}
     </fieldset>
     )

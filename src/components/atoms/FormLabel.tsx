@@ -18,11 +18,12 @@ interface FormLabelProp{
     rows?:number    
     cols?:number
     validator?: Validator
+    isReadOnly:boolean
 }
 
 
 
-function FormLabel({name,label,type,value=[],rows,cols,validator={}}:FormLabelProp){
+function FormLabel({name,label,type,value=[],rows,cols,validator={},isReadOnly}:FormLabelProp){
     const {register}=useFormContext();
     const id=useId();
     const validationRules = validator as RegisterOptions;
@@ -30,7 +31,7 @@ function FormLabel({name,label,type,value=[],rows,cols,validator={}}:FormLabelPr
     return(
         <div className='flex flex-col gap-1 pl-3 pr-3'>
             <label  htmlFor={id} className='font-bold text-lg'>{label}: </label>
-            <input {...register(name,validationRules)} type={type} id={id} placeholder={`Enter ${name}...`} 
+            <input {...register(name,validationRules)} type={type} id={id} placeholder={isReadOnly?"":`Enter ${name}...`} readOnly={isReadOnly} 
             className='border-2 pl-3 pr-3 p-1' />
         </div>)
     
@@ -38,7 +39,7 @@ function FormLabel({name,label,type,value=[],rows,cols,validator={}}:FormLabelPr
         return (
             <div className='flex flex-col gap-1 pl-3 pr-3'>
                 <label htmlFor={id} className='font-bold text-lg'>{label}: </label>
-                <select {...register(name,validationRules)} id={id} className='cursor-pointer '>
+                <select {...register(name,validationRules)} id={id} disabled={isReadOnly} className={`cursor-pointer ${isReadOnly ? 'appearance-none bg-transparent font-medium' : 'border-2'}`}>
                     {
                     value.map((item,index)=>(
                         <option key={index} value={item}>{item}</option>
@@ -53,7 +54,7 @@ function FormLabel({name,label,type,value=[],rows,cols,validator={}}:FormLabelPr
         return(
             <div className='flex flex-col gap-1 pl-3 pr-3'>
                 <label htmlFor={id} className='font-bold text-lg'>{label} </label>
-            <textarea {...register(name,validationRules)} id={id}  rows={rows||3} cols={cols||20} className='border-2 pl-3 pr-3 p-1' placeholder={`Enter Data ...`}/>
+            <textarea {...register(name,validationRules)} id={id}  rows={rows||3} cols={cols||20} readOnly={isReadOnly} className='border-2 pl-3 pr-3 p-1' placeholder={isReadOnly ? "":`Enter Data ...`}/>
             </div>
         )
     }
