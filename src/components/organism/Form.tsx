@@ -12,7 +12,7 @@ interface buttonProp{
 }
 
 interface dataForItemBox{
-    
+    itemId:number;
     itemName:string;
     createdAt:Date;    
 }
@@ -53,8 +53,9 @@ try {
         throw new Error("Bad Server Response")
     }
     console.log(data)
-    newItem({itemName:data.itemName,createdAt:result.time})
+    newItem({itemName:data.itemName,createdAt:result.time,itemId:result.id})
     alert(`Data Submitted`);
+    setIsHidden(true)
 }
 catch(error){
     console.error('Error:', error);

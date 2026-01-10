@@ -5,7 +5,7 @@ import ItemArea from "./organism/ItemArea";
 
 
 interface dataForItemBox{
-    
+    itemId:number;
     itemName:string;
     createdAt:Date;    
 }
