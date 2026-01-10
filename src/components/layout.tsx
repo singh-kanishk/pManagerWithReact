@@ -54,7 +54,7 @@ const addNewItem=(data:dataForItemBox)=>{
     return(
         <>
         <div className="grid min-h-screen grid-cols-[250px_1fr] grid-rows-[auto_1fr]">
-            <div className="col-span-2">
+            <div className="col-span-2 sticky top-0 z-1 bg-white">
                 <Header newItem={addNewItem}></Header>
             </div>      
             <div>
