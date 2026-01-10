@@ -3,9 +3,15 @@ import Folder from "./organism/Folder";
 import Header from "./organism/Header";
 import ItemArea from "./organism/ItemArea";
 
+
+interface dataForItemBox{
+    
+    itemName:string;
+    createdAt:Date;    
+}
 function Layout(){
 
-const[items,setItems]=useState([]);
+const[items,setItems]=useState<dataForItemBox[]>([]);
 
 
 // async function fetchItems(){  
@@ -39,15 +45,17 @@ useEffect(()=>{
  } 
  }
  fetchItems()
-},[])
+},[items])
     
-    
+const addNewItem=(data:dataForItemBox)=>{
+    setItems(items.concat(data))
+}
 
     return(
         <>
         <div className="grid min-h-screen grid-cols-[250px_1fr] grid-rows-[auto_1fr]">
             <div className="col-span-2">
-                <Header></Header>
+                <Header newItem={addNewItem}></Header>
             </div>      
             <div>
                 <Folder></Folder>
