@@ -4,6 +4,7 @@ interface itemBoxProp{
 };
 
 function ItemBox(prop:itemBoxProp){
+    
     return (
     
         <ul className="flex border-2 justify-between min-w-100 border-black  mr-6 ml-6 pr-4 pl-4 pt-2 pb-2">

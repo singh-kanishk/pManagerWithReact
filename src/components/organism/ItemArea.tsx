@@ -3,7 +3,7 @@ import ItemBox from "../atoms/ItemBox";
 interface boxDetail{
     itemId:number;
     itemName:string;
-    createdAt:Date;
+    createdAt:string | Date;
 }
 interface ItemAreaProp{
     boxNames:Array<boxDetail>
@@ -21,7 +21,7 @@ function ItemArea({boxNames}:ItemAreaProp){
         <hr></hr>
         <div className="flex flex-col gap-3">
         {boxNames.map((box)=>(
-            <ItemBox key={box.itemId} date={new Date (box.createdAt)} itemName={box.itemName}></ItemBox>
+            <ItemBox key={box.itemId} date={box.createdAt?new Date(box.createdAt):new Date()} itemName={box.itemName}></ItemBox>
         )   )}
         </div>
     </main>

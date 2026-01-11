@@ -14,7 +14,7 @@ interface buttonProp{
 interface dataForItemBox{
     itemId:number;
     itemName:string;
-    createdAt:Date;    
+    createdAt: string | Date;    
 }
 interface FormProp{
     newItem:(data:dataForItemBox)=>void;
@@ -52,8 +52,9 @@ try {
     if(!response.ok){
         throw new Error("Bad Server Response")
     }
-    console.log(data)
-    newItem({itemName:data.itemName,createdAt:result.time,itemId:result.id})
+    const createdAtValue = result.time?.createdAt ?? new Date().toISOString()
+    console.log("showing pushed data : "+JSON.stringify({itemName:data.itemName,createdAt:createdAtValue,itemId:result.id}))
+    newItem({itemName:data.itemName,createdAt:createdAtValue,itemId:result.id})
     alert(`Data Submitted`);
     setIsHidden(true)
 }

@@ -5,7 +5,7 @@ import Form from "./Form";
 interface dataForItemBox{
     itemId:number;
     itemName:string;
-    createdAt:Date;    
+    createdAt:string | Date;    
 }
 interface headerProp {
     newItem:(data:dataForItemBox)=>void

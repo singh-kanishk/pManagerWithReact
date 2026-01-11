@@ -7,28 +7,13 @@ import ItemArea from "./organism/ItemArea";
 interface dataForItemBox{
     itemId:number;
     itemName:string;
-    createdAt:Date;    
+    createdAt:string | Date;    
 }
+
 function Layout(){
 
 const[items,setItems]=useState<dataForItemBox[]>([]);
-
-
-// async function fetchItems(){  
-//     try{
-//         const response= await fetch("http://localhost:2995/api")
-//         if(!response.ok){
-//             throw new Error ("Error while fetching data")
-//         }
-//         const data =await response.json
-        
-//         setItems(data);
-//  }
-//  catch {
-//     return [];
-//  } 
-//  }
-     
+ 
 useEffect(()=>{
     async function fetchItems(){  
     try{
@@ -45,16 +30,16 @@ useEffect(()=>{
  } 
  }
  fetchItems()
-},[items])
-    
-const addNewItem=(data:dataForItemBox)=>{
-    setItems(items.concat(data))
+},[])
+
+const addNewItem= async (data:dataForItemBox)=>{    
+    setItems((prevItems) => [...prevItems, data]);
 }
 
     return(
         <>
         <div className="grid min-h-screen grid-cols-[250px_1fr] grid-rows-[auto_1fr]">
-            <div className="col-span-2 sticky top-0 z-1 bg-white">
+            <div className="col-span-2 sticky top-0 z-2 bg-white">
                 <Header newItem={addNewItem}></Header>
             </div>      
             <div>
