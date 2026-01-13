@@ -2,9 +2,9 @@ import { useState,useEffect } from "react";
 import Folder from "./organism/Folder";
 import Header from "./organism/Header";
 import ItemArea from "./organism/ItemArea";
+import { LayoutContext } from "../hooks/LayoutContext";
 
-
-interface dataForItemBox{
+export interface dataForItemBox{
     itemId:number;
     itemName:string;
     createdAt:string | Date;    
@@ -37,10 +37,11 @@ const addNewItem= async (data:dataForItemBox)=>{
 }
 
     return(
+        <LayoutContext.Provider value={{funcForDataForItem:addNewItem}}>
         <>
         <div className="grid min-h-screen grid-cols-[250px_1fr] grid-rows-[auto_1fr]">
             <div className="col-span-2 sticky top-0 z-2 bg-white">
-                <Header newItem={addNewItem}></Header>
+                <Header></Header>
             </div>      
             <div>
                 <Folder></Folder>
@@ -50,6 +51,7 @@ const addNewItem= async (data:dataForItemBox)=>{
             </div>
         </div>
         </>
+        </LayoutContext.Provider>
     )
 }
 export default Layout

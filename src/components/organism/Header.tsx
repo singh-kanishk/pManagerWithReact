@@ -2,15 +2,9 @@ import { useState } from "react";
 import Button from "../atoms/Button";
 import logo from "../../assets/logo.png";
 import Form from "./Form";
-interface dataForItemBox{
-    itemId:number;
-    itemName:string;
-    createdAt:string | Date;    
-}
-interface headerProp {
-    newItem:(data:dataForItemBox)=>void
-}
-function Header({newItem}:headerProp){
+
+
+function Header(){
     const [isOpen,setIsOpen]=useState(false)
     function onClick():void{
     setIsOpen(!isOpen);
@@ -26,7 +20,7 @@ return(
         <Button name="New" buttonClassName="fi fi-rr-plus" onClick={onClick} width="50px" height="50px"></Button>
         </li>
     </ul>
-    {isOpen&&<Form newItem={newItem} type="Add" buttonsInForm={[{name:"Save",width:"50px",height:"30px",type:"save"},{name:"Cancel",width:"50px",height:"30px",type:"cancel"}]}/>}
+    {isOpen&&<Form  type="Add" buttonsInForm={[{name:"Save",width:"50px",height:"30px",type:"save"},{name:"Cancel",width:"50px",height:"30px",type:"cancel"}]}/>}
 </header>
 );
 }

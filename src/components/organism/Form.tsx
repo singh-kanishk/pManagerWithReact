@@ -2,6 +2,8 @@ import { useForm , FormProvider} from "react-hook-form";
 import FieldSet from "../molecules/FieldsetInForm"
 import ButtonSection from "../molecules/ButtonSectionInForm"
 import { useState } from "react";
+import { useLayoutContext } from "../../hooks/LayoutContext";
+
 interface buttonProp{
     name?:string;
     buttonClassName?:string;
@@ -11,13 +13,9 @@ interface buttonProp{
     onClick?:()=>void;
 }
 
-interface dataForItemBox{
-    itemId:number;
-    itemName:string;
-    createdAt: string | Date;    
-}
+
 interface FormProp{
-    newItem:(data:dataForItemBox)=>void;
+    
     type:"Add"|"View";
     buttonsInForm:Array<buttonProp>
 };
@@ -30,11 +28,12 @@ interface FormData{
     note:string;
 }
 
-function Form({ type ,buttonsInForm,newItem}:FormProp){
+function Form({ type ,buttonsInForm}:FormProp){
     
 const methods= useForm<FormData>();
 const isReadOnly = type === "View";
 const [isHidden,setIsHidden]=useState(false);
+const funcForNewItem= useLayoutContext()
 
 async function onSave(data:FormData){
     
@@ -54,7 +53,9 @@ try {
     }
     const createdAtValue = result.time?.createdAt ?? new Date().toISOString()
     console.log("showing pushed data : "+JSON.stringify({itemName:data.itemName,createdAt:createdAtValue,itemId:result.id}))
-    newItem({itemName:data.itemName,createdAt:createdAtValue,itemId:result.id})
+    if(funcForNewItem!==undefined){
+    funcForNewItem({itemName:data.itemName,createdAt:createdAtValue,itemId:result.id})
+    }
     alert(`Data Submitted`);
     setIsHidden(true)
 }
