@@ -1,5 +1,6 @@
-
+import FormView from "../atoms/FormView";
 import FormLabel from "../atoms/FormLabel"
+
 interface Validator{
     
     required?:boolean;
@@ -16,8 +17,8 @@ interface objectForLabel{
     value?:Array<string>;
     rows?:number;
     cols?:number;
-    validator:Validator
-    
+    validator:Validator;
+    dataForFormView?:string;    
 }
 
 interface FieldSetProp{
@@ -27,12 +28,24 @@ interface FieldSetProp{
 }
 function FieldSet({fieldSetName,isReadOnly,objectOfLabel}:FieldSetProp){
 
-    
+
+
+    if(isReadOnly){
+
+        return (
+        <fieldset className="border-2 p-3">
+        <legend className="text-blue-400 font-bold">{fieldSetName}:</legend>
+        {objectOfLabel.map((obj)=>(            
+            <FormView key={obj.name} label={obj.label} dataForLabel={obj.dataForFormView||""}></FormView>            
+        ))}
+    </fieldset>)        
+    }
+    else
     return(
     <fieldset className="border-2 p-3">
         <legend className="text-blue-400 font-bold">{fieldSetName}:</legend>
         {objectOfLabel.map((obj)=>(
-            <FormLabel isReadOnly={isReadOnly} key={obj.name} name={obj.name} type={obj.type} label={obj.label} value={obj.value} rows={obj.rows} cols={obj.cols} validator={obj.validator}></FormLabel>            
+            <FormLabel key={obj.name} name={obj.name} type={obj.type} label={obj.label} value={obj.value} rows={obj.rows} cols={obj.cols} validator={obj.validator}></FormLabel>            
         ))}
     </fieldset>
     )

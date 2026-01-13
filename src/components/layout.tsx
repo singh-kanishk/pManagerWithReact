@@ -36,7 +36,9 @@ const addNewItem= async (data:dataForItemBox)=>{
     setItems((prevItems) => [...prevItems, data]);
 }
 
-    return(
+
+
+return(
         <LayoutContext.Provider value={{funcForDataForItem:addNewItem}}>
         <>
         <div className="grid min-h-screen grid-cols-[250px_1fr] grid-rows-[auto_1fr]">

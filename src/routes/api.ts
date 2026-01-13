@@ -6,8 +6,9 @@ const apiRouter=express.Router()
 
 
 const insertInDB=db.prepare(`INSERT INTO data (itemName,folderId,url,userName,password,note) VALUES (?, ?, ?, ?, ?, ?)`)
-const getItems=db.prepare(`SELECT itemName , createdAt FROM data`)
+const getItems=db.prepare(`SELECT itemId , itemName , createdAt FROM data`)
 const getTime=db.prepare(`SELECT createdAt FROM data WHERE itemId = ?`)
+const getItemData=db.prepare(`SELECT itemName , url , userName, password, note FROM data WHERE itemId = ?`)
 
 apiRouter.get('/',(_req:Request,res:Response)=>{
     
@@ -46,6 +47,32 @@ apiRouter.post('/save',(req:Request,res:Response)=>{
         }
     )
    }
+})
+
+apiRouter.get('/view/:itemId',(req:Request,res:Response)=>{
+    try{
+            const itemId= req.params.itemId
+            if (isNaN(parseInt(itemId))) {
+             res.status(400).json({ message: "Invalid ID format" });
+             return;
+        }
+            const result= getItemData.get(parseInt(itemId))
+            if (!result) {
+             res.status(404).json({
+                message: "Item not found"
+            });
+            return;
+        }
+            res.status(200).json({
+                message:"Successfull",
+                body:result,
+            })
+    }
+    catch{        
+        res.status(400).json({
+            message:"Error From Server Side"
+        })
+    }
 })
 
 export default apiRouter
