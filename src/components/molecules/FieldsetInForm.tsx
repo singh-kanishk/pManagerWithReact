@@ -23,15 +23,15 @@ interface objectForLabel{
 
 interface FieldSetProp{
     isReadOnly:boolean
+    isEditting:boolean
     fieldSetName:string;
     objectOfLabel:Array<objectForLabel>
 }
-function FieldSet({fieldSetName,isReadOnly,objectOfLabel}:FieldSetProp){
+function FieldSet({fieldSetName,isReadOnly,isEditting,objectOfLabel}:FieldSetProp){
 
 
 
-    if(isReadOnly){
-
+    if(isReadOnly&&!isEditting){
         return (
         <fieldset className="border-2 p-3">
         <legend className="text-blue-400 font-bold">{fieldSetName}:</legend>
@@ -39,6 +39,16 @@ function FieldSet({fieldSetName,isReadOnly,objectOfLabel}:FieldSetProp){
             <FormView key={obj.name} label={obj.label} dataForLabel={obj.dataForFormView||""}></FormView>            
         ))}
     </fieldset>)        
+    }
+    else if (isEditting){
+        return(
+    <fieldset className="border-2 p-3">
+        <legend className="text-blue-400 font-bold">{fieldSetName}:</legend>
+        {objectOfLabel.map((obj)=>(
+            <FormLabel key={obj.name} name={obj.name} type={obj.type} label={obj.label} value={obj.value} rows={obj.rows} cols={obj.cols} validator={obj.validator} dataForFormView={obj.dataForFormView}></FormLabel>            
+        ))}
+    </fieldset>
+    )
     }
     else
     return(

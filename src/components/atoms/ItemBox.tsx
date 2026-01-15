@@ -52,7 +52,7 @@ const onClick= async function(){
             <p className="text-xs">{prop.date.toLocaleDateString()} at {prop.date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
         </li>        
         </ul>
-        {isClicked && itemData && <Form type="View" buttonsInForm={[{name:"Edit",width:"50px",height:"30px",type:"save"},{name:"Cancel",width:"50px",height:"30px",type:"cancel"}]}/>}
+        {isClicked && itemData && <Form type="View" itemId={prop.itemId} buttonsInForm={[{name:"Edit",width:"50px",height:"30px",type:"edit"},{name:"Cancel",width:"50px",height:"30px",type:"cancel"}]} nextState={[{name:"Save",width:"50px",height:"30px",type:"save"},{name:"Cancel",width:"50px",height:"30px",type:"cancel"}]}/>}
         </>
         </ItemBoxContext.Provider>
     )

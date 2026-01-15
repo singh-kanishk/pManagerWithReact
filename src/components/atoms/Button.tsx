@@ -5,6 +5,7 @@ interface buttonProp{
     height:string;
     onClick?: () => void;
     typeOfButton?:"submit"|"button";
+    isDisabled?:boolean
 }
 
 function Button(prop:buttonProp){

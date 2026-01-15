@@ -1,4 +1,4 @@
-import {useId} from 'react'
+import {useEffect, useId} from 'react'
 import { useFormContext, type RegisterOptions} from 'react-hook-form';
 interface Validator{
     
@@ -18,20 +18,28 @@ interface FormLabelProp{
     rows?:number    
     cols?:number
     validator?: Validator
-    
+    dataForFormView?:string    
 }
 
 
 
-function FormLabel({name,label,type,value=[],rows,cols,validator={}}:FormLabelProp){
-    const {register}=useFormContext();
+function FormLabel({name,label,type,value=[],rows,cols,validator={},dataForFormView}:FormLabelProp){
+    const {register,setValue}=useFormContext();
     const id=useId();
+    
     const validationRules = validator as RegisterOptions;
+
+    useEffect(() => {
+        if (dataForFormView) {
+            setValue(name, dataForFormView);
+        }
+    }, [dataForFormView, name, setValue])
+
     if(type=="text"||type=="password"||type=="email")
     return(
         <div className='flex flex-col gap-1 pl-3 pr-3'>
             <label  htmlFor={id} className='font-bold text-lg'>{label}: </label>
-            <input {...register(name,validationRules)} type={type} id={id} placeholder={`Enter ${name}...`}  
+            <input {...register(name,validationRules)} type={type} id={id} placeholder={`Enter ${name}...`}    
             className='border-2 pl-3 pr-3 p-1' />
         </div>)
     
@@ -54,7 +62,7 @@ function FormLabel({name,label,type,value=[],rows,cols,validator={}}:FormLabelPr
         return(
             <div className='flex flex-col gap-1 pl-3 pr-3'>
                 <label htmlFor={id} className='font-bold text-lg'>{label} </label>
-            <textarea {...register(name,validationRules)} id={id}  rows={rows||3} cols={cols||20} className='border-2 pl-3 pr-3 p-1' placeholder={`Enter Data ...`}/>
+            <textarea {...register(name,validationRules)} id={id}  rows={rows||3} cols={cols||20} className='border-2 pl-3 pr-3 p-1' placeholder={`Enter Data ...`} />
             </div>
         )
     }

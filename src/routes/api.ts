@@ -5,10 +5,11 @@ const apiRouter=express.Router()
 
 
 
-const insertInDB=db.prepare(`INSERT INTO data (itemName,folderId,url,userName,password,note) VALUES (?, ?, ?, ?, ?, ?)`)
+const insertNewEntryInDb=db.prepare(`INSERT INTO data (itemName,folderId,url,userName,password,note) VALUES (?, ?, ?, ?, ?, ?)`)
 const getItems=db.prepare(`SELECT itemId , itemName , createdAt FROM data`)
 const getTime=db.prepare(`SELECT createdAt FROM data WHERE itemId = ?`)
 const getItemData=db.prepare(`SELECT itemName , url , userName, password, note FROM data WHERE itemId = ?`)
+const updateEntryInDb= db.prepare(`UPDATE data SET itemName = ?, url = ?, userName = ? ,password =?, note =? WHERE itemId = ?`)
 
 apiRouter.get('/',(_req:Request,res:Response)=>{
     
@@ -31,7 +32,7 @@ apiRouter.get('/',(_req:Request,res:Response)=>{
 apiRouter.post('/save',(req:Request,res:Response)=>{
     try{
     const data= req.body;
-    const pushedValue=insertInDB.run(data.itemName,data.folderId,data.url,data.userName,data.password,data.note)
+    const pushedValue=insertNewEntryInDb.run(data.itemName,data.folderId,data.url,data.userName,data.password,data.note)
     console.log(data)
     const time= getTime.get(pushedValue.lastInsertRowid) as { createdAt: string } | undefined;
     res.status(201).json({
@@ -47,6 +48,27 @@ apiRouter.post('/save',(req:Request,res:Response)=>{
         }
     )
    }
+})
+
+apiRouter.put('/save/:itemId',(req:Request,res:Response)=>{
+
+    try{
+            const itemId= req.params.itemId;
+            const data= req.body
+            console.log(data)
+             updateEntryInDb.run(data.itemName,data.url,data.userName,data.password,data.note,itemId)
+            
+            res.status(200).json({
+                message:"Successfull",
+                body:data
+            })
+    }
+    catch(error){
+        console.error(error)
+        res.status(400).json({
+            message:"Unsuccessfull"            
+        })
+    }
 })
 
 apiRouter.get('/view/:itemId',(req:Request,res:Response)=>{
