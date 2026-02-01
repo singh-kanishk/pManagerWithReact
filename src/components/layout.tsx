@@ -1,58 +1,58 @@
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import Folder from "./organism/Folder";
 import Header from "./organism/Header";
 import ItemArea from "./organism/ItemArea";
 import { LayoutContext } from "../hooks/LayoutContext";
 
-export interface dataForItemBox{
-    itemId:number;
-    itemName:string;
-    createdAt:string | Date;    
+export interface dataForItemBox {
+    itemId: number;
+    itemName: string;
+    createdAt: string | Date;
 }
 
-function Layout(){
+function Layout() {
 
-const[items,setItems]=useState<dataForItemBox[]>([]);
- 
-useEffect(()=>{
-    async function fetchItems(){  
-    try{
-        const response= await fetch("http://localhost:2995/api")
-        if(!response.ok){
-            console.error("Error while fetching data from client")
+    const [items, setItems] = useState<dataForItemBox[]>([]);
+
+    useEffect(() => {
+        async function fetchItems() {
+            try {
+                const response = await fetch("http://localhost:2995/api")
+                if (!response.ok) {
+                    console.error("Error while fetching data from client")
+                }
+                const result = await response.json()
+
+                setItems(result.data || []);
+            }
+            catch {
+                setItems([])
+            }
         }
-        const result =await response.json()
-        
-       setItems(result.data||[]);
- }
- catch {
-    setItems([])
- } 
- }
- fetchItems()
-},[])
+        fetchItems()
+    }, [])
 
-const addNewItem= async (data:dataForItemBox)=>{    
-    setItems((prevItems) => [...prevItems, data]);
-}
+    const addNewItem = async (data: dataForItemBox) => {
+        setItems((prevItems) => [...prevItems, data]);
+    }
 
 
 
-return(
-        <LayoutContext.Provider value={{funcForDataForItem:addNewItem}}>
-        <>
-        <div className="grid min-h-screen grid-cols-[250px_1fr] grid-rows-[auto_1fr]">
-            <div className="col-span-2 sticky top-0 z-2 bg-white">
-                <Header></Header>
-            </div>      
-            <div>
-                <Folder></Folder>
-            </div>
-            <div>
-                <ItemArea boxNames={items}></ItemArea>
-            </div>
-        </div>
-        </>
+    return (
+        <LayoutContext.Provider value={{ funcForDataForItem: addNewItem }}>
+            <>
+                <div className="grid min-h-screen grid-cols-[250px_1fr] grid-rows-[auto_1fr]">
+                    <div className="col-span-2 sticky top-0 z-2 bg-white">
+                        <Header></Header>
+                    </div>
+                    <div>
+                        <Folder></Folder>
+                    </div>
+                    <div>
+                        <ItemArea boxNames={items}></ItemArea>
+                    </div>
+                </div>
+            </>
         </LayoutContext.Provider>
     )
 }

@@ -11,6 +11,49 @@ const getTime=db.prepare(`SELECT createdAt FROM data WHERE itemId = ?`)
 const getItemData=db.prepare(`SELECT itemName , url , userName, password, note FROM data WHERE itemId = ?`)
 const updateEntryInDb= db.prepare(`UPDATE data SET itemName = ?, url = ?, userName = ? ,password =?, note =? WHERE itemId = ?`)
 
+const getFolders = db.prepare('SELECT * FROM folder');
+const insertFolder = db.prepare('INSERT INTO folder (folderName) VALUES (?)');
+
+apiRouter.get('/folders', (_req: Request, res: Response) => {
+    try {
+        const folders = getFolders.all();
+        res.status(200).json({
+            message: "Success",
+            data: folders
+        });
+    } catch (error) {
+        console.error("Error fetching folders:", error);
+        res.status(500).json({
+            message: "Error fetching folders"
+        });
+    }
+});
+
+apiRouter.post('/folders', (req: Request, res: Response) => {
+    try {
+        const { folderName } = req.body;
+        if (!folderName) {
+            res.status(400).json({ message: "Folder name is required" });
+            return;
+        }
+        const result = insertFolder.run(folderName);
+        res.status(201).json({
+            message: "Folder Created",
+            id: result.lastInsertRowid,
+            folderName: folderName
+        });
+    } catch (error: any) {
+        if (error.code === 'SQLITE_CONSTRAINT_UNIQUE') {
+             res.status(409).json({ message: "Folder already exists" });
+             return; 
+        }
+        console.error("Error creating folder:", error);
+        res.status(500).json({
+            message: "Error creating folder"
+        });
+    }
+});
+
 apiRouter.get('/',(_req:Request,res:Response)=>{
     
     try{
